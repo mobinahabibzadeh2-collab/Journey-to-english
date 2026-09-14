@@ -1,0 +1,14 @@
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+const prisma=new PrismaClient();
+const password=process.env.SEED_ADMIN_PASSWORD||'ChangeMe_1405!';
+const username=process.env.ADMIN_USERNAME||'admin';
+const hash=await bcrypt.hash(password,12);
+await prisma.user.upsert({where:{username},update:{passwordHash:hash},create:{name:'Journey to English Admin',username,passwordHash:hash,role:'ADMIN'}});
+const student=await prisma.user.upsert({where:{mobile:'09120000000'},update:{name:'دانش‌آموز نمونه'},create:{name:'دانش‌آموز نمونه',mobile:'09120000000',role:'STUDENT'}});
+let c=await prisma.course.findFirst({where:{title:'نمونه دوره مقدماتی'}});
+if(!c)c=await prisma.course.create({data:{title:'نمونه دوره مقدماتی',description:'دوره نمونه برای تست پنل مدیر و دانش‌آموز',level:'Beginner',lessons:{create:[{title:'درس اول',order:1,sections:{create:[{title:'بخش اول',order:1}]}}]}}});
+await prisma.enrollment.upsert({where:{studentId_courseId:{studentId:student.id,courseId:c.id}},update:{status:'ACTIVE'},create:{studentId:student.id,courseId:c.id,status:'ACTIVE'}});
+console.log(`Admin: ${username} / ${password}`);
+console.log('Dev student mobile: 09120000000');
+await prisma.$disconnect();

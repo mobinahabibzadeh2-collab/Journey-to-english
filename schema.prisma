@@ -1,0 +1,61 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+
+enum Role { ADMIN STUDENT }
+enum EnrollmentStatus { ACTIVE LOCKED }
+model User {
+  id String @id @default(cuid())
+  name String
+  username String? @unique
+  mobile String? @unique
+  passwordHash String?
+  role Role
+  createdAt DateTime @default(now())
+  enrollments Enrollment[]
+  otpCodes OtpCode[]
+}
+model OtpCode {
+  id String @id @default(cuid())
+  userId String
+  codeHash String
+  expiresAt DateTime
+  attempts Int @default(0)
+  usedAt DateTime?
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([userId, expiresAt])
+}
+model Course {
+  id String @id @default(cuid())
+  title String
+  description String?
+  level String?
+  createdAt DateTime @default(now())
+  lessons Lesson[]
+  enrollments Enrollment[]
+}
+model Lesson {
+  id String @id @default(cuid())
+  title String
+  order Int @default(0)
+  courseId String
+  course Course @relation(fields:[courseId], references:[id], onDelete:Cascade)
+  sections Section[]
+}
+model Section {
+  id String @id @default(cuid())
+  title String
+  videoPath String?
+  order Int @default(0)
+  lessonId String
+  lesson Lesson @relation(fields:[lessonId], references:[id], onDelete:Cascade)
+}
+model Enrollment {
+  id String @id @default(cuid())
+  status EnrollmentStatus @default(LOCKED)
+  studentId String
+  courseId String
+  student User @relation(fields:[studentId], references:[id], onDelete:Cascade)
+  course Course @relation(fields:[courseId], references:[id], onDelete:Cascade)
+  @@unique([studentId,courseId])
+}

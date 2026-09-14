@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U journey -d journey_to_english"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_DB: journey_to_english
+      POSTGRES_USER: journey
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 3000
+      DATABASE_URL: postgresql://journey:${POSTGRES_PASSWORD:-change_me}@db:5432/journey_to_english
+      JWT_SECRET: ${JWT_SECRET:-replace_me}
+      VIDEO_SECRET: ${VIDEO_SECRET:-replace_me}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-change_me_now}
+      OTP_TTL_MINUTES: ${OTP_TTL_MINUTES:-5}
+      VIDEO_URL_TTL_SECONDS: ${VIDEO_URL_TTL_SECONDS:-120}
+      SMS_PROVIDER: ${SMS_PROVIDER:-}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_FROM: ${TWILIO_FROM:-}
+      KAVENEGAR_API_KEY: ${KAVENEGAR_API_KEY:-}
+      KAVENEGAR_TEMPLATE: ${KAVENEGAR_TEMPLATE:-JourneyToEnglish}
+    ports:
+      - "3000:3000"
+    volumes:
+      - private_videos:/app/private/videos
+volumes:
+  postgres_data:
+  private_videos:
