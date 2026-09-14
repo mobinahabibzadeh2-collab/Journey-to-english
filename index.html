@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Journey to English | آکادمی زبان</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="assets/logo.png" alt="Journey to English logo"><span>Journey to English</span></div>
+  <nav><button data-view="home">خانه</button><button data-view="student">ورود دانش‌آموز</button><button data-view="admin">پنل مدیر</button></nav>
+</header>
+<main>
+<section id="home" class="view active">
+  <div class="hero">
+    <div class="hero-text"><span class="eyebrow">آکادمی تخصصی آموزش زبان انگلیسی</span><h1>یادگیری زبان، یک سفر هیجان‌انگیز است.</h1><p>آموزش ساده، کاربردی و خلاقانه برای کودکان و نوجوانان؛ با دوره‌های ویدیویی منظم و دسترسی اختصاصی هر دانش‌آموز.</p><div class="actions"><button class="primary" data-view="student">ورود به کلاس‌ها</button><button class="secondary" data-view="admin">ورود مدیر</button></div></div>
+    <div class="hero-card"><img src="assets/logo.png" alt="لوگوی آکادمی"></div>
+  </div>
+  <div class="section-title"><span>ویژگی‌های آکادمی</span><h2>همه‌چیز منظم، زیبا و قابل مدیریت</h2></div>
+  <div class="feature-grid"><article><b>📚 دوره‌های چنددرسی</b><p>هر دوره می‌تواند تعداد زیادی درس، بخش و ویدئو داشته باشد.</p></article><article><b>🔐 دسترسی اختصاصی</b><p>هر دانش‌آموز فقط دوره‌هایی را می‌بیند که برای او فعال شده‌اند.</p></article><article><b>🌟 مسیر یادگیری شخصی</b><p>هر دانش‌آموز به دوره‌های اختصاصی خودش دسترسی دارد و قدم‌به‌قدم پیش می‌رود.</p></article><article><b>📱 واکنش‌گرا</b><p>قابل استفاده در موبایل، تبلت، لپ‌تاپ و دسکتاپ.</p></article></div>
+</section>
+
+<section id="student" class="view">
+  <div class="panel-head"><div><span class="eyebrow">فضای اختصاصی یادگیری</span><h2>پنل دانش‌آموز</h2></div><span class="badge green">ورود امن</span></div>
+  <div id="studentLoginBox" class="login-box"><h3>ورود با شماره موبایل</h3><input id="studentPhone" placeholder="مثلاً 09120000000" inputmode="tel"><button class="primary" id="requestOtp">دریافت کد ورود</button><div id="otpBox" class="hidden"><input id="studentOtp" placeholder="کد ۶ رقمی" inputmode="numeric" maxlength="6"><button class="primary" id="verifyOtp">ورود به پنل</button></div><small id="studentMsg">کد تأیید برای شماره ثبت‌شده ارسال می‌شود.</small></div>
+  <div id="studentArea" class="hidden"><div class="welcome"><b id="studentWelcome">سلام!</b><br>به کلاس‌های Journey to English خوش آمدی 🌟 <button class="secondary logoutBtn">خروج</button></div><div id="studentCourses" class="course-grid"></div></div>
+</section>
+
+<section id="admin" class="view">
+  <div id="adminLoginBox" class="login-box"><span class="eyebrow">مدیریت آکادمی</span><h2>ورود مدیر</h2><input id="adminUser" placeholder="نام کاربری"><input id="adminPass" type="password" placeholder="رمز عبور"><button class="primary" id="adminLogin">ورود به پنل</button><small id="adminMsg">فقط مدیر می‌تواند دوره‌ها و دانش‌آموزان را مدیریت کند.</small></div>
+  <div id="adminArea" class="hidden">
+    <div class="panel-head"><div><span class="eyebrow">مدیریت آکادمی</span><h2>پنل مدیریت مدرس</h2></div><div><span class="badge gold">مدیر</span> <button class="secondary logoutBtn">خروج</button></div></div>
+    <div class="stats"><div><b id="studentCount">0</b><span>دانش‌آموز</span></div><div><b id="courseCount">0</b><span>دوره</span></div><div><b>∞</b><span>درس و بخش</span></div><div><b>🎥</b><span>ویدئو</span></div></div>
+    <div class="admin-grid">
+      <div class="card"><h3>➕ افزودن دانش‌آموز</h3><input id="newName" placeholder="نام و نام خانوادگی"><input id="newPhone" placeholder="شماره موبایل"><button class="primary" id="addStudent">ثبت دانش‌آموز</button><div id="studentList"></div></div>
+      <div class="card"><h3>📚 دوره‌ها</h3><input id="newCourseTitle" placeholder="نام دوره"><input id="newCourseLevel" placeholder="سطح، مثلاً Beginner"><input id="newCourseDesc" placeholder="توضیح کوتاه"><button class="primary" id="addCourse">ساخت دوره</button><small>بعد از ساخت دوره، درس و بخش را از قسمت «ساختار دوره» اضافه کن و سپس ویدئو را همان‌جا آپلود کن.</small><div id="courseList"></div></div>
+    </div>
+    <div class="card wide"><h3>🔐 فعال / قفل کردن دوره برای دانش‌آموز</h3><div class="form-row"><select id="enrollStudent"></select><select id="enrollCourse"></select><select id="enrollStatus"><option value="ACTIVE">فعال</option><option value="LOCKED">قفل</option></select><button class="primary" id="saveEnrollment">ذخیره دسترسی</button></div><div id="enrollmentMsg"></div></div>
+    <div class="card wide"><h3>🧩 ساختار دوره و ویدئو</h3><div id="courseTree"></div></div>
+  </div>
+</section>
+</main>
+<footer>© Journey to English — Learn Today, Lead Tomorrow</footer>
+<script src="app.js"></script>
+</body></html>
